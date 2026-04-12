@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning with Tejal | Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    <div class="container">
+        <header>
+            <h1 class="main-title">LEARNING WITH TEJAL</h1>
+            <p class="quote">"NCERT आधारित सम्पूर्ण शिक्षा का केंद्र"</p>
+            <p class="credits">From Sandeep Kumawat & Ashok Kumar</p>
+        </header>
+
+        <div class="login-box">
+            <h3>अपना नाम दर्ज करें</h3>
+            <input type="text" id="userName" placeholder="आपका नाम यहाँ लिखें..." required>
+            <button onclick="enterDashboard()">प्रवेश करें (Enter)</button>
+        </div>
+    </div>
+
+    <script>
+        function enterDashboard() {
+            const name = document.getElementById('userName').value;
+            if(name.trim() !== "") {
+                localStorage.setItem('studentName', name);
+                window.location.href = 'dashboard.html';
+            } else {
+                alert("कृपया अपना नाम लिखें!");
+            }
+        }
+    </script>
+</body>
+</html>
