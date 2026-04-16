@@ -1,36 +1,100 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning with Tejal | Home</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Learning with Tejal | Secure Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { height: 100vh; display: flex; align-items: center; justify-content: center; background: #0f172a; color: white; overflow: hidden; }
+        .background-overlay { position: absolute; width: 100%; height: 100%; background: radial-gradient(circle at top right, #1e293b, transparent), radial-gradient(circle at bottom left, #38bdf822, transparent); z-index: -1; }
+        
+        .container { text-align: center; width: 90%; max-width: 450px; padding: 40px; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        .main-title { font-size: 1.8rem; font-weight: 700; color: #38bdf8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .quote { font-size: 0.85rem; color: #94a3b8; margin-bottom: 25px; }
+
+        .login-box label { display: block; text-align: left; font-size: 0.8rem; color: #38bdf8; margin-bottom: 5px; margin-left: 5px; }
+        input { width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 0.95rem; margin-bottom: 15px; outline: none; transition: 0.3s; }
+        input:focus { border-color: #38bdf8; }
+
+        /* Captcha Styling */
+        .captcha-container { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        #captchaText { background: #334155; padding: 10px; border-radius: 8px; font-weight: 700; letter-spacing: 4px; font-style: italic; color: #fbbf24; user-select: none; flex: 1; text-decoration: line-through; }
+        .refresh-btn { cursor: pointer; background: none; border: none; color: #38bdf8; font-size: 1.2rem; }
+
+        button.enter-btn { width: 100%; padding: 14px; background: #38bdf8; color: #0f172a; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        button.enter-btn:hover { background: #7dd3fc; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3); }
+        
+        .footer-credits { margin-top: 25px; font-size: 0.75rem; color: #64748b; }
+    </style>
 </head>
-<body>
+<body onload="generateCaptcha()">
     <div class="background-overlay"></div>
+    
     <div class="container">
         <header>
             <h1 class="main-title">LEARNING WITH TEJAL</h1>
-            <p class="quote">"NCERT आधारित सम्पूर्ण शिक्षा का केंद्र"</p>
-            <p class="credits">By Sandeep Kumawat & Ashok Kumar</p>
+            <p class="quote">Premium Education Hub for NCERT</p>
         </header>
 
         <div class="login-box">
-            <h3>अपना नाम दर्ज करें</h3>
-            <input type="text" id="userName" placeholder="आपका नाम यहाँ लिखें..." required>
-            <button onclick="enterDashboard()">प्रवेश करें (Enter)</button>
+            <label>Full Name</label>
+            <input type="text" id="userName" placeholder="Enter your name" required>
+
+            <label>City / Location</label>
+            <input type="text" id="userCity" placeholder="Enter your city" required>
+
+            <label>Security Check (Captcha)</label>
+            <div class="captcha-container">
+                <div id="captchaText"></div>
+                <button class="refresh-btn" onclick="generateCaptcha()">🔄</button>
+            </div>
+            <input type="text" id="captchaInput" placeholder="Type the code above">
+
+            <button class="enter-btn" onclick="validateLogin()">Login to Dashboard →</button>
+        </div>
+
+        <div class="footer-credits">
+            By Sandeep Kumawat & Ashok Kumar
         </div>
     </div>
 
     <script>
-        function enterDashboard() {
-            const name = document.getElementById('userName').value;
-            if(name.trim() !== "") {
-                localStorage.setItem('studentName', name);
-                window.location.href = 'dashboard.html';
-            } else {
-                alert("कृपया अपना नाम लिखें!");
+        let currentCaptcha = "";
+
+        // Function to generate random Captcha
+        function generateCaptcha() {
+            const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let code = "";
+            for (let i = 0; i < 6; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
             }
+            currentCaptcha = code;
+            document.getElementById('captchaText').innerText = code;
+            document.getElementById('captchaInput').value = "";
+        }
+
+        function validateLogin() {
+            const name = document.getElementById('userName').value.trim();
+            const city = document.getElementById('userCity').value.trim();
+            const captchaInput = document.getElementById('captchaInput').value.trim();
+
+            if (name === "" || city === "") {
+                alert("Please fill in both Name and City.");
+                return;
+            }
+
+            if (captchaInput.toUpperCase() !== currentCaptcha) {
+                alert("Invalid Captcha! Please try again.");
+                generateCaptcha();
+                return;
+            }
+
+            // Success: Save data and redirect
+            localStorage.setItem('studentName', name);
+            localStorage.setItem('studentCity', city);
+            window.location.href = 'dashboard.html';
         }
     </script>
 </body>
