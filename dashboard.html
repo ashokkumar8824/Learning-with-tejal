@@ -84,53 +84,36 @@
                     { name: "📜 इतिहास (History) - 11/12th", url: "https://ncert.nic.in/textbook.php?khhs1=0-11" },
                     { name: "🗺️ भूगोल (Geography) - 11/12th", url: "https://ncert.nic.in/textbook.php?khgy1=0-7" },
                     { name: "⚖️ राजनीति (Civics) - 11/12th", url: "https://ncert.nic.in/textbook.php?khps1=0-10" }
-                ]
-            },
-    ncert_questions: {
+                ],
+                ncert_questions: {
         name: "NCERT प्रश्न-उत्तर (हिंदी माध्यम)",
         links: [
             { name: "❓ कक्षा 11 & 12 (भौतिकी)", url: "https://ncert.nic.in/exemplar-problems.php?ln=hi" },
             { name: "❓ कक्षा 11 & 12 (रसायन)", url: "https://ncert.nic.in/exemplar-problems.php?ln=hi" },
             { name: "❓ कक्षा 11 & 12 (जीव विज्ञान)", url: "https://ncert.nic.in/exemplar-problems.php?ln=hi" }
         ]
-    },
+    }
+}; // Books object yahan band ho gaya
 
-        function showSubject(key) {
-            document.getElementById('welcome-screen').classList.add('hidden');
-            document.getElementById('reader-view').classList.add('hidden');
-            document.getElementById('subject-view').classList.remove('hidden');
-            
-            const sub = books[key];
-            document.getElementById('subject-title').innerText = sub.name;
-            const container = document.getElementById('chapter-buttons');
-            container.innerHTML = "";
+function showSubject(key) {
+    document.getElementById('welcome-screen').classList.add('hidden');
+    document.getElementById('reader-view').classList.add('hidden');
+    document.getElementById('subject-view').classList.remove('hidden');
 
-            sub.links.forEach(link => {
-                const div = document.createElement('div');
-                div.className = "ncert-btn";
-                div.innerText = link.name;
-                div.onclick = () => openBook(link.url);
-                container.appendChild(div);
-            });
-        }
+    const sub = books[key];
+    document.getElementById('subject-title').innerText = sub.name;
+    const container = document.getElementById('chapter-buttons');
+    container.innerHTML = "";
 
-        function openBook(url) {
-            // Check if it's a PDF or a Website link
-            if(url.includes('.pdf')) {
-                document.getElementById('subject-view').classList.add('hidden');
-                document.getElementById('reader-view').classList.remove('hidden');
-                document.getElementById('book-reader').src = url;
-            } else {
-                // Open main NCERT Portal in new tab if iframe blocks it
-                window.open(url, '_blank');
-            }
-        }
+    sub.links.forEach(link => {
+        const div = document.createElement('div');
+        div.className = "ncert-btn";
+        div.innerText = link.name;
+        div.onclick = () => openBook(link.url);
+        container.appendChild(div);
+    });
+}
 
-        function backToChapters() {
-            document.getElementById('reader-view').classList.add('hidden');
-            document.getElementById('subject-view').classList.remove('hidden');
-            document.getElementById('book-reader').src = "";
-        }
     </script>
 </body>
 </html>
