@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Portal | NCERT Hindi</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <title>Study Dashboard</title>
+    <link rel="stylesheet" href="style.css"> </head>
 <body class="dashboard-body">
 
     <div class="sidebar">
-        <h2>📚 डिजिटल लाइब्रेरी</h2>
+        <h2 style="color: white; text-align: center; padding: 20px;">📚 लाइब्रेरी</h2>
         <button class="sub-btn" onclick="showSubject('biology')">🧬 जीव विज्ञान (Bio)</button>
         <button class="sub-btn" onclick="showSubject('physics')">⚡ भौतिक विज्ञान (Phy)</button>
         <button class="sub-btn" onclick="showSubject('chemistry')">🧪 रसायन विज्ञान (Chem)</button>
@@ -20,20 +19,17 @@
 
     <div class="main-content">
         <div id="welcome-screen">
-            <h1 style="font-size: 3.5rem; color: #38bdf8;">नमस्ते, <span id="studentName"></span>!</h1>
-            <p style="font-size: 1.3rem; color: #94a3b8; margin-top: 15px;">पढ़ाई शुरू करने के लिए बाईं ओर से विषय चुनें।</p>
-            <div style="margin-top: 50px; padding: 20px; border: 1px dashed #334155; border-radius: 10px;">
-                <p>यहाँ आपको कक्षा 11, 12 और प्रतियोगी परीक्षाओं की सभी NCERT पुस्तकें हिंदी में मिलेंगी।</p>
-            </div>
+            <h1>नमस्ते, <span id="studentName">विद्यार्थी</span>!</h1>
+            <p>पढ़ाई शुरू करने के लिए बाईं ओर से विषय चुनें।</p>
         </div>
 
         <div id="subject-view" class="hidden">
-            <h2 id="subject-title" style="color: #818cf8; border-bottom: 2px solid #334155; padding-bottom: 10px;"></h2>
-            <div id="chapter-buttons" class="chapter-grid"></div>
+            <h2 id="subject-title"></h2>
+            <div id="chapter-buttons"></div>
         </div>
 
         <div id="reader-view" class="hidden">
-            <button class="back-btn" onclick="backToChapters()">← वापस जाएँ (BACK)</button>
+            <button class="back-btn" onclick="backToChapters()">← वापस जाएँ</button>
             <div class="book-container">
                 <iframe id="book-reader" src=""></iframe>
             </div>
@@ -41,86 +37,87 @@
     </div>
 
     <script>
+        // Student name set karne ke liye
         document.getElementById('studentName').innerText = localStorage.getItem('studentName') || "विद्यार्थी";
 
         const books = {
             biology: {
-                name: "जीव विज्ञान (Biology) - सम्पूर्ण कोर्स",
+                name: "जीव विज्ञान (Biology)",
                 links: [
-                    { name: "📖 कक्षा 11: सम्पूर्ण पुस्तक (Full)", url: "https://ncert.nic.in/textbook.php?khbo1=0-22" },
-                    { name: "📖 कक्षा 12: सम्पूर्ण पुस्तक (Full)", url: "https://ncert.nic.in/textbook.php?khbo2=0-16" },
-                    { name: "🧬 कोशिका (Cell) - विशेष नोट्स", url: "https://ncert.nic.in/textbook/pdf/khbo108.pdf" },
-                    { name: "🎓 College Biology (B.Sc)", url: "https://www.google.com/search?q=B.Sc+Biology+Hindi+Notes" }
+                    { name: "📖 कक्षा 11: सम्पूर्ण पुस्तक", url: "https://ncert.nic.in/textbook.php?khbo1=0-22" },
+                    { name: "📖 कक्षा 12: सम्पूर्ण पुस्तक", url: "https://ncert.nic.in/textbook.php?khbo2=0-16" }
                 ]
             },
             physics: {
-                name: "भौतिक विज्ञान (Physics) - सम्पूर्ण कोर्स",
+                name: "भौतिक विज्ञान (Physics)",
                 links: [
                     { name: "📖 कक्षा 11: सम्पूर्ण पुस्तक", url: "https://ncert.nic.in/textbook.php?khph1=0-8" },
-                    { name: "📖 कक्षा 12: सम्पूर्ण पुस्तक", url: "https://ncert.nic.in/textbook.php?khph2=0-14" },
-                    { name: "🎓 Higher Physics (College)", url: "https://www.google.com/search?q=College+Physics+Hindi" }
+                    { name: "📖 कक्षा 12: सम्पूर्ण पुस्तक", url: "https://ncert.nic.in/textbook.php?khph2=0-14" }
                 ]
             },
             chemistry: {
-                name: "रसायन विज्ञान (Chemistry) - सम्पूर्ण कोर्स",
+                name: "रसायन विज्ञान (Chemistry)",
                 links: [
                     { name: "📖 कक्षा 11: सम्पूर्ण पुस्तक", url: "https://ncert.nic.in/textbook.php?khch1=0-9" },
-                    { name: "📖 कक्षा 12: सम्पूर्ण पुस्तक", url: "https://ncert.nic.in/textbook.php?khch2=0-9" },
-                    { name: "🧪 परमाणु की संरचना", url: "https://ncert.nic.in/textbook/pdf/khch102.pdf" }
+                    { name: "📖 कक्षा 12: सम्पूर्ण पुस्तक", url: "https://ncert.nic.in/textbook.php?khch2=0-9" }
                 ]
             },
             maths: {
-                name: "गणित (Maths) - सम्पूर्ण कोर्स",
+                name: "गणित (Maths)",
                 links: [
                     { name: "📖 कक्षा 11: सम्पूर्ण गणित", url: "https://ncert.nic.in/textbook.php?khmh1=0-16" },
-                    { name: "📖 कक्षा 12: सम्पूर्ण गणित", url: "https://ncert.nic.in/textbook.php?khmh2=0-13" },
-                    { name: "🎓 Advanced Maths (College)", url: "https://www.google.com/search?q=B.Sc+Maths+Hindi" }
+                    { name: "📖 कक्षा 12: सम्पूर्ण गणित", url: "https://ncert.nic.in/textbook.php?khmh2=0-13" }
                 ]
             },
             gk: {
-                name: "सामान्य ज्ञान (GK) - NCERT आधारित",
+                name: "सामान्य ज्ञान (GK)",
                 links: [
-                    { name: "📜 इतिहास (History) - 11/12th", url: "https://ncert.nic.in/textbook.php?khhs1=0-11" },
-                    { name: "🗺️ भूगोल (Geography) - 11/12th", url: "https://ncert.nic.in/textbook.php?khgy1=0-7" },
-                    { name: "⚖️ राजनीति (Civics) - 11/12th", url: "https://ncert.nic.in/textbook.php?khps1=0-10" }
+                    { name: "📜 इतिहास (History)", url: "https://ncert.nic.in/textbook.php?khhs1=0-11" },
+                    { name: "🗺️ भूगोल (Geography)", url: "https://ncert.nic.in/textbook.php?khgy1=0-7" }
                 ]
             },
             ncert_questions: {
                 name: "NCERT प्रश्न-उत्तर (हिंदी माध्यम)",
                 links: [
-                    { name: "❓ कक्षा 11 & 12 प्रश्न (भौतिकी)", url: "https://ncert.nic.in/exemplar-problems.php?ln=hi" },
-                    { name: "❓ कक्षा 11 & 12 प्रश्न (रसायन)", url: "https://ncert.nic.in/exemplar-problems.php?ln=hi" },
-                    { name: "❓ कक्षा 11 & 12 प्रश्न (जीव विज्ञान)", url: "https://ncert.nic.in/exemplar-problems.php?ln=hi" }
+                    { name: "❓ कक्षा 11 & 12 (भौतिकी)", url: "https://ncert.nic.in/exemplar-problems.php?ln=hi" },
+                    { name: "❓ कक्षा 11 & 12 (रसायन)", url: "https://ncert.nic.in/exemplar-problems.php?ln=hi" },
+                    { name: "❓ कक्षा 11 & 12 (जीव विज्ञान)", url: "https://ncert.nic.in/exemplar-problems.php?ln=hi" }
                 ]
             }
         };
 
         function showSubject(key) {
-            document.getElementById('welcome-screen').classList.add('hidden');
+            // Screens control karne ke liye
+            document.getElementById('welcome-screen').style.display = 'none';
             document.getElementById('reader-view').classList.add('hidden');
             document.getElementById('subject-view').classList.remove('hidden');
 
             const sub = books[key];
             document.getElementById('subject-title').innerText = sub.name;
+            
             const container = document.getElementById('chapter-buttons');
-            container.innerHTML = "";
+            container.innerHTML = ""; // Purana content saaf karne ke liye
 
             sub.links.forEach(link => {
-                const div = document.createElement('div');
-                div.className = "ncert-btn";
-                div.innerText = link.name;
-                div.onclick = () => openBook(link.url);
-                container.appendChild(div);
+                const btn = document.createElement('button');
+                btn.className = "sub-btn"; // Wahi class jo sidebar mein hai
+                btn.style.width = "100%";
+                btn.style.marginBottom = "10px";
+                btn.innerText = link.name;
+                btn.onclick = () => openBook(link.url);
+                container.appendChild(btn);
             });
         }
 
         function openBook(url) {
-            if(url.includes('.pdf')) {
+            if(url.includes('exemplar') || url.includes('textbook.php')) {
+                // NCERT ki site direct open hogi naye tab mein
+                window.open(url, '_blank');
+            } else {
+                // PDF hai toh reader mein dikhao
                 document.getElementById('subject-view').classList.add('hidden');
                 document.getElementById('reader-view').classList.remove('hidden');
                 document.getElementById('book-reader').src = url;
-            } else {
-                window.open(url, '_blank');
             }
         }
 
@@ -130,5 +127,13 @@
             document.getElementById('book-reader').src = "";
         }
     </script>
+
+    <style>
+        /* Agar buttons nahi dikh rahe toh ye chota sa style help karega */
+        .hidden { display: none; }
+        .sub-btn { cursor: pointer; padding: 10px; margin: 5px; border-radius: 5px; border: none; background: #334155; color: white; transition: 0.3s; }
+        .sub-btn:hover { background: #475569; }
+        #chapter-buttons { display: flex; flex-direction: column; max-width: 400px; margin-top: 20px; }
+    </style>
 </body>
 </html>
