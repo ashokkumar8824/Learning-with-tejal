@@ -7,30 +7,97 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { height: 100vh; display: flex; align-items: center; justify-content: center; background: #0f172a; color: white; overflow: hidden; }
-        .background-overlay { position: absolute; width: 100%; height: 100%; background: radial-gradient(circle at top right, #1e293b, transparent), radial-gradient(circle at bottom left, #38bdf822, transparent); z-index: -1; }
         
-        .container { text-align: center; width: 90%; max-width: 450px; padding: 40px; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
-        .main-title { font-size: 1.8rem; font-weight: 700; color: #38bdf8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
-        .quote { font-size: 0.85rem; color: #94a3b8; margin-bottom: 25px; }
+        body { 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center; 
+            background: url('https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=2073&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            color: white; 
+            overflow: hidden; 
+        }
 
-        .login-box label { display: block; text-align: left; font-size: 0.8rem; color: #38bdf8; margin-bottom: 5px; margin-left: 5px; }
-        input { width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 0.95rem; margin-bottom: 15px; outline: none; transition: 0.3s; }
-        input:focus { border-color: #38bdf8; }
+        /* Blur Overlay for Professional Background */
+        .background-blur {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.7); /* Dark Tint */
+            backdrop-filter: blur(8px); /* Background Blur */
+            z-index: -1;
+        }
+
+        /* --- Moving Link Style --- */
+        .moving-header {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            background: rgba(30, 41, 59, 0.9);
+            padding: 10px 0;
+            border-bottom: 2px solid #38bdf8;
+            overflow: hidden;
+            z-index: 10;
+        }
+        .marquee-text {
+            display: inline-block;
+            white-space: nowrap;
+            animation: moveLeft 15s linear infinite;
+        }
+        .marquee-text a {
+            color: #38bdf8;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        @keyframes moveLeft {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* --- Login Container --- */
+        .container { 
+            text-align: center; 
+            width: 90%; 
+            max-width: 430px; 
+            padding: 35px; 
+            background: rgba(30, 41, 59, 0.6); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 24px; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+        }
+
+        .main-title { font-size: 1.7rem; font-weight: 700; color: #ffffff; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .quote { font-size: 0.8rem; color: #38bdf8; margin-bottom: 25px; font-weight: 500; }
+
+        .login-box label { display: block; text-align: left; font-size: 0.75rem; color: #94a3b8; margin-bottom: 5px; margin-left: 5px; }
+        input { width: 100%; padding: 12px; background: rgba(15, 23, 42, 0.8); border: 1px solid #334155; border-radius: 10px; color: white; font-size: 0.95rem; margin-bottom: 15px; outline: none; transition: 0.3s; }
+        input:focus { border-color: #38bdf8; box-shadow: 0 0 8px rgba(56, 189, 248, 0.3); }
 
         /* Captcha Styling */
-        .captcha-container { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        #captchaText { background: #334155; padding: 10px; border-radius: 8px; font-weight: 700; letter-spacing: 4px; font-style: italic; color: #fbbf24; user-select: none; flex: 1; text-decoration: line-through; }
+        .captcha-container { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        #captchaText { background: #1e293b; padding: 10px; border-radius: 8px; font-weight: 700; letter-spacing: 4px; color: #fbbf24; flex: 1; border: 1px dashed #38bdf8; user-select: none; }
         .refresh-btn { cursor: pointer; background: none; border: none; color: #38bdf8; font-size: 1.2rem; }
 
         button.enter-btn { width: 100%; padding: 14px; background: #38bdf8; color: #0f172a; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.3s; margin-top: 10px; }
         button.enter-btn:hover { background: #7dd3fc; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3); }
         
-        .footer-credits { margin-top: 25px; font-size: 0.75rem; color: #64748b; }
+        .footer-credits { margin-top: 25px; font-size: 0.75rem; color: #94a3b8; }
     </style>
 </head>
 <body onload="generateCaptcha()">
-    <div class="background-overlay"></div>
+    <div class="background-blur"></div>
+
+    <div class="moving-header">
+        <div class="marquee-text">
+            <a href="https://www.youtube.com/channel/UCI1HqokWhssz2hqeJm3RGeg/videos" target="_blank">
+                📺 Subscribe to our YouTube Channel for Latest NCERT Updates & Videos! Click here to join.
+            </a>
+        </div>
+    </div>
     
     <div class="container">
         <header>
@@ -45,25 +112,24 @@
             <label>City / Location</label>
             <input type="text" id="userCity" placeholder="Enter your city" required>
 
-            <label>Security Check (Captcha)</label>
+            <label>Security Check (Type the code below)</label>
             <div class="captcha-container">
                 <div id="captchaText"></div>
-                <button class="refresh-btn" onclick="generateCaptcha()">🔄</button>
+                <button class="refresh-btn" onclick="generateCaptcha()" title="Refresh Captcha">🔄</button>
             </div>
-            <input type="text" id="captchaInput" placeholder="Type the code above">
+            <input type="text" id="captchaInput" placeholder="Enter captcha code">
 
             <button class="enter-btn" onclick="validateLogin()">Login to Dashboard →</button>
         </div>
 
         <div class="footer-credits">
-            By Sandeep Kumawat & Ashok Kumar
+            Design by Sandeep Kumawat & Ashok Kumar
         </div>
     </div>
 
     <script>
         let currentCaptcha = "";
 
-        // Function to generate random Captcha
         function generateCaptcha() {
             const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             let code = "";
@@ -81,17 +147,17 @@
             const captchaInput = document.getElementById('captchaInput').value.trim();
 
             if (name === "" || city === "") {
-                alert("Please fill in both Name and City.");
+                alert("Please enter both Name and City.");
                 return;
             }
 
             if (captchaInput.toUpperCase() !== currentCaptcha) {
-                alert("Invalid Captcha! Please try again.");
+                alert("Invalid Security Code! Please try again.");
                 generateCaptcha();
                 return;
             }
 
-            // Success: Save data and redirect
+            // Save data and redirect
             localStorage.setItem('studentName', name);
             localStorage.setItem('studentCity', city);
             window.location.href = 'dashboard.html';
